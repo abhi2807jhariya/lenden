@@ -38,18 +38,22 @@ export const auth = {
     storage.setItem("lenden_user", JSON.stringify(session.user));
     if (phoneNumber) storage.setItem("lenden_phone", phoneNumber);
   },
-  clearSession() { for (const storage of [localStorage, sessionStorage]) { storage.removeItem("lenden_access_token"); storage.removeItem("lenden_user"); storage.removeItem("lenden_phone"); } },
+  saveAvatar(avatarUrl: string) {
+    if (avatarUrl) localStorage.setItem("lenden_avatar_url", avatarUrl);
+    else localStorage.removeItem("lenden_avatar_url");
+  },
+  clearSession() { for (const storage of [localStorage, sessionStorage]) { storage.removeItem("lenden_access_token"); storage.removeItem("lenden_user"); storage.removeItem("lenden_phone"); } localStorage.removeItem("lenden_avatar_url"); },
 };
 
 export type User = { id: string; fullName: string; phoneNumber?: string | null; email?: string | null; avatarUrl?: string | null; language: string; appLockEnabled: boolean };
-export type ApiContact = { id: string; fullName: string; phoneNumber: string; initials: string; note?: string | null; balanceType: "TO_RECEIVE" | "TO_PAY" | "SETTLED"; balanceAmount: number };
+export type ApiContact = { id: string; fullName: string; phoneNumber: string; initials: string; avatarUrl?: string | null; note?: string | null; balanceType: "TO_RECEIVE" | "TO_PAY" | "SETTLED"; balanceAmount: number };
 export type ApiTransaction = { id: string; contactId: string; contactName: string; type: "I_GAVE" | "I_TOOK"; title: string; amount: number; date: string; note?: string | null; dueDate?: string | null };
 
 export const api = {
   people: () => apiRequest<ApiContact[]>("/contacts"),
   person: (id: string) => apiRequest<ApiContact & { transactions: ApiTransaction[] }>(`/contacts/${id}`),
-  createPerson: (body: { fullName: string; phoneNumber: string; note?: string }) => apiRequest<ApiContact>("/contacts", { method: "POST", body }),
-  updatePerson: (id: string, body: { fullName: string; phoneNumber: string; note?: string }) => apiRequest<ApiContact>(`/contacts/${id}`, { method: "PATCH", body }),
+  createPerson: (body: { fullName: string; phoneNumber: string; avatarUrl?: string; note?: string }) => apiRequest<ApiContact>("/contacts", { method: "POST", body }),
+  updatePerson: (id: string, body: { fullName: string; phoneNumber: string; avatarUrl?: string; note?: string }) => apiRequest<ApiContact>(`/contacts/${id}`, { method: "PATCH", body }),
   deletePerson: (id: string) => apiRequest<{ success: boolean }>(`/contacts/${id}`, { method: "DELETE" }),
   activity: (filter?: string, month?: string) => apiRequest<ApiTransaction[]>(`/transactions/activity?${new URLSearchParams({ ...(filter && filter !== "all" ? { filter } : {}), ...(month ? { month } : {}) })}`),
   addEntry: (body: { contactId: string; type: "I_GAVE" | "I_TOOK"; amount: number; date?: string; note?: string; dueDate?: string }) => apiRequest<ApiTransaction>("/transactions/add-entry", { method: "POST", body }),
