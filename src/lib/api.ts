@@ -20,7 +20,15 @@ export async function apiRequest<T>(path: string, options: ApiOptions = {}): Pro
 
 export const auth = {
   sendOtp: (identifier: { phoneNumber?: string; email?: string }) => apiRequest<{ devOtpHint?: string }>("/auth/send-otp", { method: "POST", body: identifier }),
-  verifyOtp: (identifier: { phoneNumber?: string; email?: string }, otp: string, fullName?: string) => apiRequest<{ accessToken: string; user: User }>("/auth/verify-otp", { method: "POST", body: { ...identifier, otp, fullName } }),
+  verifyOtp: (identifier: { phoneNumber?: string; email?: string }, otp: string, fullName?: string) => apiRequest<{ accessToken: string; user: User }>("/auth/verify-otp", {
+    method: "POST",
+    body: {
+      ...identifier,
+      // OTPs are numeric; normalize pasted values before they reach the API.
+      otp: otp.replace(/\D/g, "").slice(0, 4),
+      ...(fullName ? { fullName } : {}),
+    },
+  }),
   login: (email: string, password: string) => apiRequest<{ accessToken: string; user: User }>("/auth/login", { method: "POST", body: { email, password } }),
   resetPassword: (email: string, otp: string, password: string) => apiRequest<{ success: boolean }>("/auth/reset-password", { method: "POST", body: { email, otp, password } }),
   setPassword: (password: string) => apiRequest<{ success: boolean }>("/auth/set-password", { method: "POST", body: { password } }),
