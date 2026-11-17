@@ -16,7 +16,7 @@ export default function WelcomeClient() {
         </div>
 
         <div className="flex-none">
-          <h1 className="m-0 text-[29px] font-extrabold leading-[1.03] max-[360px]:text-[27px]" id="welcome-title">Every rupee.<br />Clearly tracked.</h1>
+          <h1 className="m-0 text-[29px] font-extrabold leading-[1.03] max-[360px]:text-[27px]" id="welcome-title">Har Lenden ka<br />Clear Hisaab</h1>
           <p className="m-0 mt-[7px] text-[14px] leading-[1.3] text-[#374640]">Track money given, money received<br /> and bills due.</p>
         </div>
 
