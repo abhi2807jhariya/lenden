@@ -36,7 +36,11 @@ export default function CreatePasswordClient() {
     <main className="grid min-h-dvh place-items-center bg-[radial-gradient(ellipse_at_50%_34%,#fff_0%,#f6f8f5_76%,#eaf0ec_100%)] p-[18px] text-[#18251f] max-[480px]:p-0">
       <section className="flex min-h-[min(560px,calc(100dvh-36px))] w-full max-w-[390px] flex-col rounded-[22px] border border-[#d5dfda] bg-white/[.96] p-5 pb-6 shadow-[0_12px_32px_rgba(34,66,52,.1)] max-[480px]:min-h-dvh max-[480px]:rounded-none max-[480px]:border-0 max-[480px]:shadow-none">
         <header className="relative flex min-h-11 items-center justify-center">
-          <Link href="/register" aria-label="Back to registration" className="absolute left-0 grid size-10 place-items-center text-[#08714f]">←</Link>
+          <Link href="/register" aria-label="Back to registration" className="absolute left-0 grid size-10 place-items-center rounded-full text-[#08714f] transition hover:bg-[#e8f6ed] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#70bd91]">
+            <svg className="size-[25px] fill-none stroke-current stroke-2 [stroke-linecap:round] [stroke-linejoin:round]" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M19 12H5m7 7-7-7 7-7" />
+            </svg>
+          </Link>
           <Link href="/welcome" className="inline-flex items-center gap-[7px] text-[22px] font-extrabold text-[#102b24]"><img className="block size-[35px] object-contain" src="/images/logo.png" alt="" /><span>Lenden</span></Link>
         </header>
         <div className="mt-7"><p className="m-0 mb-1 text-[13px] font-extrabold text-[#08714f]">ACCOUNT SECURED</p><h1 className="m-0 text-[28px] font-extrabold leading-[1.1] text-[#14251e]">Create your password</h1><p className="m-0 mt-1.5 text-[14px] leading-[1.45] text-[#59645f]">Use your password to log in next time without OTP.</p></div>
